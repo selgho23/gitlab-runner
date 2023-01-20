@@ -8,12 +8,26 @@ ENDCOLOR="\e[0m"
 # MAIN
 #################################################
 function main() {
-
+  while [[ "$#" -gt 0 ]]; do
+    case $1 in
+      "-d"|"--docker")
+        test
+        ;;
+    esac
+    shift
+  done
+  
+  echo -e "${CYAN}Hello World!${ENDCOLOR}"
 }
 
 #################################################
 # HELPER FUNCTIONS
 #################################################
+#----------------------------------------------------------
+function test() {
+  echo -e "${GREEN}Hello World!${ENDCOLOR}"
+}
+
 #----------------------------------------------------------
 function docker_install() {
   echo -e "${CYAN}\n\nINSTALL DOCKER ENGINE${ENDCOLOR}"
@@ -44,3 +58,8 @@ function docker_install() {
   
   echo -e "${GREEN}\t${ENDCOLOR}"
 }
+
+#################################################
+# RUN MAIN
+#################################################
+main "$@"
