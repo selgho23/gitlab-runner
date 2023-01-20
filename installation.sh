@@ -11,14 +11,17 @@ function main() {
   while [[ "$#" -gt 0 ]]; do
     case $1 in
       "-d"|"--docker")
-        test
-        return 0
+        docker_install; return 0
+        ;;
+      "-gr"|"--gitlab-runner")
+        gitlab_runner_install; return 0
         ;;
     esac
     shift
   done
   
-  echo -e "${CYAN}Hello World!${ENDCOLOR}"
+  docker_install
+  gitlab_runner
 }
 
 #################################################
@@ -56,8 +59,21 @@ function docker_install() {
   systemctl start docker.service
   systemctl enable docker.service
   systemctl enable containerd.server
+}
+
+#----------------------------------------------------------
+function gitlab_runner_install() {
+  echo -e "${CYAN}\n\nINSTALL GITLAB RUNNER${ENDCOLOR}"
+  echo -e "${GREEN}\tUpdate the apt package index and install packages to allow apt to use a repository over HTTPS${ENDCOLOR}"
+  apt-get update -y
+  apt-get install -y ca-certificates curl gnupg lsb-release
   
-  echo -e "${GREEN}\t${ENDCOLOR}"
+  echo -e "${GREEN}\n\tSet up the official gitlab repository${ENDCOLOR}"
+  curl -L "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh" | bash
+  apt-get update -y
+  
+  echo -e "${GREEN}\n\tInstall the latest version of the gitlab runner${ENDCOLOR}"
+  apt-get install -y gitlab-runner
 }
 
 #################################################
