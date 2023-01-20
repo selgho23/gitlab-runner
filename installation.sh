@@ -12,6 +12,7 @@ function main() {
     case $1 in
       "-d"|"--docker")
         test
+        return 0
         ;;
     esac
     shift
