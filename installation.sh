@@ -21,21 +21,16 @@ function main() {
   done
   
   docker_install
-  gitlab_runner
+  gitlab_runner_install
 }
 
 #################################################
 # HELPER FUNCTIONS
 #################################################
 #----------------------------------------------------------
-function test() {
-  echo -e "${GREEN}Hello World!${ENDCOLOR}"
-}
-
-#----------------------------------------------------------
 function docker_install() {
   echo -e "${CYAN}\n\nINSTALL DOCKER ENGINE${ENDCOLOR}"
-  echo -e "${GREEN}\tUninstall old package versions${ENDCOLOR}"
+  echo -e "${GREEN}\n\tUninstall old package versions${ENDCOLOR}"
   apt-get remove -y docker docker-engine docker.io containerd runc
   
   echo -e "${GREEN}\n\tUpdate the apt package index and install packages to allow apt to use a repository over HTTPS${ENDCOLOR}"
@@ -58,13 +53,12 @@ function docker_install() {
   echo -e "${GREEN}\n\tConfigure docker to start on booth with systemd${ENDCOLOR}"
   systemctl start docker.service
   systemctl enable docker.service
-  systemctl enable containerd.server
 }
 
 #----------------------------------------------------------
 function gitlab_runner_install() {
   echo -e "${CYAN}\n\nINSTALL GITLAB RUNNER${ENDCOLOR}"
-  echo -e "${GREEN}\tUpdate the apt package index and install packages to allow apt to use a repository over HTTPS${ENDCOLOR}"
+  echo -e "${GREEN}\n\tUpdate the apt package index and install packages to allow apt to use a repository over HTTPS${ENDCOLOR}"
   apt-get update -y
   apt-get install -y ca-certificates curl gnupg lsb-release
   
